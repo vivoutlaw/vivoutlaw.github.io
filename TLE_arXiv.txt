@@ -7,7 +7,7 @@ We didn't implement anything special. Here are the links to the codes, that we c
 - Bilinear model: https://github.com/gy20073/compact_bilinear_pooling
 - C3D: https://github.com/chuckcho/video-caffe, and Also take a look at C3Dv1.1 from Du Tran, pre-trained ResNet model is available.
 - 2D Inception: https://github.com/yjxiong/temporal-segment-networks/tree/master/models/hmdb51
-- We changed the inception_4e layer, such that we have 14X14 Conv, instead of 7X7. Below is attached the modified codes.
+- We changed the inception_4e layer, such that we have 14X14X1024 Conv, instead of 7X7X1024. Below is attached the modified codes.
 
 Compile them together and you're good to use bilinear models with Inception/C3D. Other implementation details for training the network are provided in the paper. Good luck!
 
