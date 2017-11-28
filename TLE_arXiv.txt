@@ -1,0 +1,74 @@
+Hi,
+
+Thank you very much for your interest in our work!
+
+We didn't implement anything special. Here are the links to the codes, that we compiled together.
+
+- Bilinear model: https://github.com/gy20073/compact_bilinear_pooling
+- C3D: https://github.com/chuckcho/video-caffe, and Also take a look at C3Dv1.1 from Du Tran, pre-trained ResNet model is available.
+- 2D Inception: https://github.com/yjxiong/temporal-segment-networks/tree/master/models/hmdb51
+- We changed the inception_4e layer, such that we have 14X14 Conv, instead of 7X7. Below is attached the modified codes.
+
+Compile them together and you're good to use bilinear models with Inception/C3D. Other implementation details for training the network are provided in the paper. Good luck!
+
+best, Vivek​
+
+
+
+
+
+
+
+############################################################### inception_4e #######################################
+layer { name: "inception_4e/3x3_reduce" type: "Convolution" bottom: "inception_4d/output" top: "inception_4e/3x3_reduce"
+  param { lr_mult: 1 decay_mult: 1 } param { lr_mult: 2 decay_mult: 0 }
+  convolution_param { num_output: 128 kernel_size: 1
+    weight_filler { type: "xavier"}
+    bias_filler { type: "constant" value: 0.2 } } }
+layer { name: "inception_4e/3x3_reduce_bn" type: "BN" bottom: "inception_4e/3x3_reduce" top: "inception_4e/3x3_reduce_bn"
+  param { lr_mult: 1 decay_mult: 0 } param { lr_mult: 1 decay_mult: 0 }
+  bn_param { frozen: true slope_filler { type: "constant" value: 1 } bias_filler { type: "constant" value: 0 } } }
+layer { name: "inception_4e/relu_3x3_reduce" type: "ReLU" bottom: "inception_4e/3x3_reduce_bn" top: "inception_4e/3x3_reduce_bn" }
+layer { name: "inception_4e/3x3" type: "Convolution" bottom: "inception_4e/3x3_reduce_bn" top: "inception_4e/3x3"
+  param { lr_mult: 1 decay_mult: 1 } param { lr_mult: 2 decay_mult: 0 }
+  convolution_param { num_output: 192 pad: 1 kernel_size: 3 stride: 1
+    weight_filler { type: "xavier" }
+    bias_filler { type: "constant" value: 0.2 } } }
+layer { name: "inception_4e/3x3_bn" type: "BN" bottom: "inception_4e/3x3" top: "inception_4e/3x3_bn"
+  param { lr_mult: 1 decay_mult: 0 } param { lr_mult: 1 decay_mult: 0 }
+  bn_param { frozen: true slope_filler { type: "constant" value: 1 } bias_filler { type: "constant" value: 0 } } }
+layer { name: "inception_4e/relu_3x3" type: "ReLU" bottom: "inception_4e/3x3_bn" top: "inception_4e/3x3_bn" }
+layer { name: "inception_4e/double_3x3_reduce" type: "Convolution" bottom: "inception_4d/output" top: "inception_4e/double_3x3_reduce"
+  param { lr_mult: 1 decay_mult: 1 } param { lr_mult: 2 decay_mult: 0 }
+  convolution_param { num_output: 192 kernel_size: 1
+    weight_filler { type: "xavier" }
+    bias_filler { type: "constant" value: 0.2 } } }
+layer { name: "inception_4e/double_3x3_reduce_bn" type: "BN" bottom: "inception_4e/double_3x3_reduce" top: "inception_4e/double_3x3_reduce_bn"
+  param { lr_mult: 1 decay_mult: 0 } param { lr_mult: 1 decay_mult: 0 }
+  bn_param { frozen: true slope_filler { type: "constant" value: 1 } bias_filler { type: "constant" value: 0 } } }
+layer { name: "inception_4e/relu_double_3x3_reduce" type: "ReLU" bottom: "inception_4e/double_3x3_reduce_bn" top: "inception_4e/double_3x3_reduce_bn" }
+layer { name: "inception_4e/double_3x3_1" type: "Convolution" bottom: "inception_4e/double_3x3_reduce_bn" top: "inception_4e/double_3x3_1"
+  param { lr_mult: 1 decay_mult: 1 } param { lr_mult: 2 decay_mult: 0 }
+  convolution_param { num_output: 256 pad: 1 kernel_size: 3
+    weight_filler { type: "xavier"}
+    bias_filler { type: "constant" value: 0.2 } } }
+layer { name: "inception_4e/double_3x3_1_bn" type: "BN" bottom: "inception_4e/double_3x3_1" top: "inception_4e/double_3x3_1_bn"
+  param { lr_mult: 1 decay_mult: 0 } param { lr_mult: 1 decay_mult: 0 }
+  bn_param { frozen: true slope_filler { type: "constant" value: 1 } bias_filler { type: "constant" value: 0 } } }
+layer { name: "inception_4e/relu_double_3x3_1" type: "ReLU" bottom: "inception_4e/double_3x3_1_bn" top: "inception_4e/double_3x3_1_bn" }
+layer { name: "inception_4e/double_3x3_2" type: "Convolution" bottom: "inception_4e/double_3x3_1_bn" top: "inception_4e/double_3x3_2"
+  param { lr_mult: 1 decay_mult: 1 } param { lr_mult: 2 decay_mult: 0 }
+  convolution_param { num_output: 256 pad: 1 kernel_size: 3 stride: 1
+    weight_filler { type: "xavier"}
+    bias_filler { type: "constant" value: 0.2 } } }
+layer { name: "inception_4e/double_3x3_2_bn" type: "BN" bottom: "inception_4e/double_3x3_2" top: "inception_4e/double_3x3_2_bn"
+  param { lr_mult: 1 decay_mult: 0 } param { lr_mult: 1 decay_mult: 0 }
+  bn_param { frozen: true slope_filler { type: "constant" value: 1 } bias_filler { type: "constant" value: 0 } } }
+layer { name: "inception_4e/relu_double_3x3_2" type: "ReLU" bottom: "inception_4e/double_3x3_2_bn" top: "inception_4e/double_3x3_2_bn" }
+layer { name: "inception_4e/pool" type: "Pooling" bottom: "inception_4d/output" top: "inception_4e/pool"
+  pooling_param { pool: MAX kernel_size: 3 pad: 1 stride: 1 } }
+layer { name: "inception_4e/output" type: "Concat"
+  bottom: "inception_4e/3x3_bn"
+  bottom: "inception_4e/double_3x3_2_bn"
+  bottom: "inception_4e/pool"
+  top: "inception_4e/output" }
