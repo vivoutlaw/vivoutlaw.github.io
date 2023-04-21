@@ -2,7 +2,7 @@ Hi,
 
 Thank you very much for your interest in our work!
 
-We used a consistent dataset throughout all the papers. Here is the link to the dataset (http://cvhci.anthropomatik.kit.edu/~vsharma/VGG2.tar.gz) and a bit more details about BBT and BUFFY.
+We used a consistent dataset throughout all the papers. Here is the link to the dataset (https://cvhci.anthropomatik.kit.edu/~datasets-publisher/published_datasets/face_and_body/BBT_Buffy_ACCIO_VGG_face_reps/VGG2.tar.gz) and a bit more details about BBT and BUFFY.
 
 Considered characters: BBT
 character_name = {'howard',  'leonard',    'penny',    'raj',    'sheldon'}; % (Tracks --> label)
